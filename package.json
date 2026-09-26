@@ -1,6 +1,6 @@
 {
   "name": "invoice2excel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "费用报销单 Excel 生成工具（Tauri 2 + Rust 桌面应用）",
   "license": "MIT",

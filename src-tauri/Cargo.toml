@@ -1,6 +1,6 @@
 [package]
 name = "invoice2excel"
-version = "1.0.0"
+version = "1.0.1"
 description = "费用报销单 Excel 生成工具"
 edition = "2021"
 
