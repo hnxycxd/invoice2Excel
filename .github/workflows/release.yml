@@ -1,0 +1,45 @@
+# 推送 v* 格式的 tag（如 v1.0.0）到远程时自动打包，并把 exe 发布到 GitHub Release
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+# 创建 Release 需要写权限
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      # 缓存 src-tauri 的编译产物，加速后续构建
+      - name: Rust 编译缓存
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: 安装 Node.js（打包脚本用）
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # cargo build --release + 把 exe 和使用说明复制到 dist/
+      - name: 打包
+        run: npm run build
+
+      # 创建 Release 并上传 dist/ 下的产物
+      - name: 发布到 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/invoice2excel.exe
+            dist/使用说明.txt
+          generate_release_notes: true
+          fail_on_unmatched_files: true

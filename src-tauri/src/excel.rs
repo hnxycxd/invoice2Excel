@@ -14,7 +14,7 @@ pub fn parse_ymd(s: &str) -> Option<(u16, u8, u8)> {
     None
 }
 
-/// 严格按《博弈费用报销单.xlsx》模板复刻版式：
+/// 严格按模板复刻版式：
 /// 横版 A4，B2:O2 标题（宋体 21 加粗，行高 30），其余行高 33；
 /// 摘要=B:F，金额=G:K，附单据数=L:O；金额 Arial 12、中文 宋体 12、签字行 黑体 11。
 pub fn build_workbook(date_str: &str, department: &str, project: &str, details: &[DetailRow]) -> Workbook {

@@ -99,6 +99,13 @@ body {
   color: var(--muted);
   flex-shrink: 0;
 }
+/* 必填项：标签前红色星号 */
+.field.required label::before {
+  content: '*';
+  color: var(--danger);
+  font-weight: 700;
+  margin-right: 2px;
+}
 
 input:not([type]),
 input[type='date'] {
@@ -163,6 +170,7 @@ table.detail th.col-amount {
 }
 table.detail th.col-docs {
   width: 19%;
+  text-align: right;
 }
 table.detail th:last-child,
 table.detail td:last-child {
@@ -179,6 +187,10 @@ table.detail td.seq {
 }
 table.detail input {
   padding: 7px 10px;
+}
+/* 金额、附单据数：编辑与显示时数字靠右 */
+table.detail td.num input {
+  text-align: right;
 }
 
 tr.invalid-row td {

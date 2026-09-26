@@ -1,6 +1,6 @@
 # 报销单生成（invoice2Excel）
 
-基于 **Tauri 2 + Rust** 的 Windows 桌面小工具：填表单 → 另存为对话框 → 生成与《博弈费用报销单》模板版式一致的 .xlsx。
+基于 **Tauri 2 + Rust** 的 Windows 桌面小工具：填表单 → 另存为对话框 → 生成 .xlsx。
 
 ## 功能
 
