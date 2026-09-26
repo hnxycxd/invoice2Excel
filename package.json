@@ -1,0 +1,17 @@
+{
+  "name": "invoice2excel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "费用报销单 Excel 生成工具（Tauri 2 + Rust 桌面应用）",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cargo run --manifest-path src-tauri/Cargo.toml",
+    "prebuild": "node scripts/clean-dist.js",
+    "build": "cargo build --release --manifest-path src-tauri/Cargo.toml",
+    "postbuild": "node scripts/pack-dist.js",
+    "clean": "node scripts/clean-dist.js",
+    "zip": "node scripts/zip-dist.js",
+    "test": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "icon": "python tools/make_icon.py"
+  }
+}

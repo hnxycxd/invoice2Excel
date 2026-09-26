@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>报销单生成</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <!-- <span class="logo">¥</span> -->
+        <h1>报销单生成</h1>
+      </header>
+
+      <section class="card card-basic">
+        <h2 class="card-title">基本信息</h2>
+        <div class="fields">
+          <div class="field">
+            <label for="name">姓名</label>
+            <input id="name" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="date">日期</label>
+            <input type="date" id="date" />
+            <button type="button" class="mini" id="todayBtn">今天</button>
+          </div>
+          <div class="field">
+            <label for="department">部门</label>
+            <input id="department" list="deptList" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="project">项目名称</label>
+            <input id="project" autocomplete="off" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title">报销明细</h2>
+        <table class="detail">
+          <thead>
+            <tr>
+              <th class="seq">序号</th>
+              <th>摘要</th>
+              <th class="col-amount">金额(元)</th>
+              <th class="col-docs">附单据数</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <button type="button" class="add-row" id="addRow">＋ 添加一行</button>
+
+        <div class="summary">
+          <span class="summary-label">总金额</span>
+          <div class="summary-amounts">
+            <b id="numAmount">¥0.00</b>
+            <b id="cnAmount">零元整</b>
+          </div>
+        </div>
+      </section>
+
+      <label class="option">
+        <input type="checkbox" id="deleteEmpty" checked />
+        自动删除空行
+      </label>
+
+      <footer class="actions">
+        <div class="btn-row">
+          <button type="button" class="secondary" id="resetBtn">重 置</button>
+          <button type="button" class="primary" id="generate">
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 3v11" />
+              <path d="m7 10 5 5 5-5" />
+              <path d="M5 21h14" />
+            </svg>
+            <span id="genLabel">生成 Excel 文件</span>
+          </button>
+        </div>
+        <div class="status" id="status"></div>
+      </footer>
+    </main>
+
+    <!-- 校验错误弹窗：只能点“确定”关闭 -->
+    <div class="modal-mask" id="modalMask" hidden>
+      <div
+        class="modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalMsg"
+      >
+        <p id="modalMsg"></p>
+        <button type="button" class="modal-ok" id="modalOk">确 定</button>
+      </div>
+    </div>
+
+    <datalist id="deptList"></datalist>
+    <datalist id="feeList"></datalist>
+    <script src="app.js"></script>
+  </body>
+</html>

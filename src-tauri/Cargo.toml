@@ -1,0 +1,17 @@
+[package]
+name = "invoice2excel"
+version = "1.0.0"
+description = "费用报销单 Excel 生成工具"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+rust_xlsxwriter = "0.99.1"
+serde = { version = "1", features = ["derive"] }
+tauri = { version = "2", features = ["common-controls-v6"] }
+tauri-plugin-dialog = "2"
+
+[profile.release]
+strip = true
