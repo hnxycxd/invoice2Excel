@@ -10,8 +10,14 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 rust_xlsxwriter = "0.99.1"
 serde = { version = "1", features = ["derive"] }
-tauri = { version = "2", features = ["common-controls-v6"] }
+# 关闭默认 feature（brotli 资产压缩、dynamic-acl 等）：UI 资产很小压缩得不偿失，
+# 权限能力是静态的也用不到 dynamic-acl；保留 wry（WebView 运行时）和 common-controls-v6（原生对话框样式）
+tauri = { version = "2", default-features = false, features = ["wry", "common-controls-v6"] }
 tauri-plugin-dialog = "2"
 
 [profile.release]
 strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
