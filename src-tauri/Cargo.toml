@@ -1,8 +1,13 @@
 [package]
 name = "invoice2excel"
-version = "1.0.1"
+version = "1.0.2"
 description = "费用报销单 Excel 生成工具"
 edition = "2021"
+
+[features]
+# release 构建必须启用（等价于 tauri build CLI 自动加的开关）：
+# 不启用时 tauri 误判为开发模式，exe 会去连 devUrl (localhost:5173) 而不是加载内嵌的 ../ui 资源
+custom-protocol = ["tauri/custom-protocol"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

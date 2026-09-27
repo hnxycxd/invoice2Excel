@@ -1,6 +1,6 @@
 // ===== 预设选项（按需修改这里即可）=====
-const DEPARTMENTS = ['综合办公室', '财务部', '人力资源部', '市场部', '技术部', '采购部']
-const FEE_TYPES = ['市内交通费', '餐费', '软件费']
+const DEPARTMENTS = ['行政部', '市场部', '量化开发部', '量化研究部']
+const FEE_TYPES = ['市内交通费', '餐饮费', '服务费', '住宿费', '差旅费']
 
 const AMOUNT_MAX = 9999999.99 // 金额上限（元）
 const INITIAL_ROWS = 2 // 初始/重置后的明细行数
@@ -271,7 +271,16 @@ function clearInvalid() {
   els.tbody.querySelectorAll('tr.invalid-row').forEach((tr) => tr.classList.remove('invalid-row'))
 }
 
+// 行号转中文数字：1→一、2→二、10→十、21→二十一
+function numToCn(n) {
+  if (n >= 100) return String(n)
+  const D = '零一二三四五六七八九'
+  if (n < 10) return D[n]
+  return (Math.floor(n / 10) > 1 ? D[Math.floor(n / 10)] : '') + '十' + (n % 10 ? D[n % 10] : '')
+}
+
 // ===== 校验：返回 null 表示通过，否则返回错误消息 =====
+// 附单据数可留空；摘要与金额必须成对填写；允许整行留空
 function validate() {
   if (!els.name.value.trim()) return '请填写姓名。'
   if (!els.date.value) return '请选择日期。'
@@ -280,15 +289,19 @@ function validate() {
   clearInvalid()
   const rows = [...els.tbody.children].map((tr) => rowOf(tr))
   let firstBad = 0
+  let firstField = ''
   rows.forEach((r, i) => {
-    const filled = r.filter((v) => v !== '').length
-    if (filled > 0 && filled < 3) {
-      if (!firstBad) firstBad = i + 1
+    const [summary, amount, docs] = r
+    const missing = summary && !amount ? '金额' : !summary && (amount || docs) ? '摘要' : ''
+    if (missing) {
+      if (!firstBad) {
+        firstBad = i + 1
+        firstField = missing
+      }
       els.tbody.children[i].classList.add('invalid-row')
     }
   })
-  if (firstBad)
-    return `第 ${firstBad} 行明细不完整：摘要、金额、附单据数需填写完整（允许整行留空）。`
+  if (firstBad) return `第${numToCn(firstBad)}行中“${firstField}”不能为空`
   return null
 }
 

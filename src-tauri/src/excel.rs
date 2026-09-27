@@ -24,9 +24,10 @@ pub fn build_workbook(date_str: &str, department: &str, project: &str, details: 
 
     // 列宽：数值取自模板 XML 存储宽度；rust_xlsxwriter 落盘时会加 5/7 字符的
     // 像素换算差，因此这里预减 5/7，使最终文件与模板逐列一致（I/J/K 默认宽 9.0）。
+    // F 列在模板宽度 10.125 基础上加宽到 12.0。
     const PAD: f64 = 5.0 / 7.0;
     for (col, width) in [
-        (0u16, 11.375), (1, 10.625), (2, 6.5), (3, 7.125), (4, 4.25), (5, 10.125),
+        (0u16, 11.375), (1, 10.625), (2, 6.5), (3, 7.125), (4, 4.25), (5, 12.0),
         (6, 2.25), (7, 8.25), (8, 9.0), (9, 9.0), (10, 9.0), (11, 2.5),
         (12, 4.75), (13, 6.125), (14, 5.0),
     ] {
@@ -145,7 +146,7 @@ pub fn build_workbook(date_str: &str, department: &str, project: &str, details: 
     r += 1;
 
     // 签字行：整行合并、无边框
-    ws.merge_range(r, 1, r, 14, "财务审核            出纳             报销人           领款人 ", &f_sign).unwrap();
+    ws.merge_range(r, 1, r, 14, "财务审核                出纳                 报销人                领款人 ", &f_sign).unwrap();
 
     // 页面设置：A4 横向，页边距与模板一致
     ws.set_paper_size(9); // 9 = A4

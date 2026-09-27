@@ -3,3 +3,4 @@ src-tauri/target/
 target-release/
 src-tauri/gen/
 dist/
+dist-web/

@@ -92,6 +92,16 @@ fn sanitize_filename(s: &str) -> String {
         .to_string()
 }
 
+/// 默认文件名：姓名_部门_日期_报销单.xlsx（日期压缩为 YYYYMMDD）
+fn default_filename(name: &str, department: &str, date: &str) -> String {
+    format!(
+        "{}_{}_{}_报销单.xlsx",
+        sanitize_filename(name),
+        sanitize_filename(department),
+        date.replace(['/', '-'], "")
+    )
+}
+
 fn save_dialog(
     app: &tauri::AppHandle,
     default_name: &str,
@@ -115,7 +125,7 @@ fn save_dialog(
     }
 }
 
-/// 生成报销单 Excel：弹出另存对话框（默认文件名 姓名_部门_日期.xlsx），
+/// 生成报销单 Excel：弹出另存对话框（默认文件名 姓名_部门_日期_报销单.xlsx），
 /// 用户确定后写盘；返回 Ok(None) 表示用户取消了对话框。
 #[tauri::command]
 async fn generate_excel(app: tauri::AppHandle, form: ExpenseForm) -> Result<Option<String>, String> {
@@ -133,12 +143,7 @@ async fn generate_excel(app: tauri::AppHandle, form: ExpenseForm) -> Result<Opti
     }
     let details = collect_details(&form)?;
 
-    let default_name = format!(
-        "{}_{}_{}.xlsx",
-        sanitize_filename(&name),
-        sanitize_filename(&department),
-        date.replace('/', "-")
-    );
+    let default_name = default_filename(&name, &department, &date);
     let picked = save_dialog(&app, &default_name, form.last_dir.as_deref()).blocking_save_file();
     let Some(picked) = picked else {
         return Ok(None);
@@ -230,5 +235,17 @@ mod tests {
     fn filename_sanitizing() {
         assert_eq!(sanitize_filename("技术部/一"), "技术部_一");
         assert_eq!(sanitize_filename("财务部"), "财务部");
+    }
+
+    #[test]
+    fn default_filename_format() {
+        assert_eq!(
+            default_filename("张三", "技术部", "2026-09-20"),
+            "张三_技术部_20260920_报销单.xlsx"
+        );
+        assert_eq!(
+            default_filename("张/三", "技:术部", "2026/09/20"),
+            "张_三_技_术部_20260920_报销单.xlsx"
+        );
     }
 }

@@ -9,11 +9,11 @@
 
 ## 构建与运行
 
-根目录 `package.json` 提供了全部常用命令（Node 仅作脚本编排，无需 `npm install`）：
+根目录 `package.json` 提供了全部常用命令（开发命令需要先 `npm install` 安装 tauri-cli 与 vite）：
 
 | 命令            | 作用                                                                                        |
 | --------------- | ------------------------------------------------------------------------------------------- |
-| `npm run dev`   | 调试运行：debug 编译并启动应用（前端为静态资源、编译期嵌入，改动 `ui/` 后重新运行即可生效） |
+| `npm run dev`   | 调试运行：自动启动 Vite 开发服务器（`http://localhost:5173`）并 debug 编译启动应用，**保存即生效**——改 `ui/` 下前端文件即时热更新，改 `src-tauri/` 下 Rust 文件自动重编译并重启。注意调试请始终用本命令，直接 `cargo run` 会因没有 Vite 服务器而白屏 |
 | `npm run build` | 打包：**自动先清空 `dist/`** → `cargo build --release` → 产物复制到根目录 `dist/`           |
 | `npm run zip`   | 把 `dist/invoice2excel.exe`、`使用说明.txt` 与 `README.md` 打成 `dist/报销单生成.zip`       |
 | `npm test`      | `cargo test`（人民币大写、日期/金额解析等单测）                                             |
